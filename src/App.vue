@@ -1,18 +1,42 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main class="content">
+    <ShopItem 
+      v-for="item in $options.$ITEMS" 
+      :key="item.id" 
+      :name="item.name"
+      :price="item.price"
+      :img-path="item.image"
+      @onSelect="onSelectItem"
+    >
+      <template #actions="{ count }">
+        <button 
+          id="buy-button"
+          type="button"
+          class="product-container__buy-btn"
+          @click="onSelectItem({ item, count })"
+        >
+          Buy
+        </button>
+      </template>
+    </ShopItem>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { SHOP_ITEMS } from './config/shop-items';
+import ShopItem from './components/ShopItem';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    ShopItem
+  },
+  methods: {
+    onSelectItem({ item, count }) {
+      this.$router.push({ name: 'BuyPage', params: { itemId: item.id, count } });
+    }
+  },
+  $ITEMS: SHOP_ITEMS
 }
 </script>
 
